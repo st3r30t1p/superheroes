@@ -58,3 +58,13 @@ html, body {
 .m-b-md {
   margin-bottom: 30px;
 }
+
+//custom styles
+
+.hero-image {
+  width: 200px;
+  img {
+    width: 100%;
+    object-fit: cover;
+  }
+}

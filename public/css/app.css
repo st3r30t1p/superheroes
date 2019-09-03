@@ -10696,3 +10696,13 @@ body {
   margin-bottom: 30px;
 }
 
+.hero-image {
+  width: 200px;
+}
+
+.hero-image img {
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+

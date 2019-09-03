@@ -12,4 +12,14 @@ class SuperHero extends Model
         'nickname', 'real_name', 'origin_description',
         'superpowers', 'catch_phrase', 'images'
     ];
+
+
+    //mutators
+
+    public function getImagesAttribute($value) {
+        if(is_null($value)) {
+            return asset('images/default-hero.jpg');
+        }
+        return $value;
+    }
 }

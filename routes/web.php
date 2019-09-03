@@ -11,9 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'SuperHeroController@index');
+Route::get('/hero/{id}', 'SuperHeroController@show')->name('hero.show');
+
 
 Auth::routes();
 
