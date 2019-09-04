@@ -14,6 +14,12 @@
                 </div>
             @endif
 
+            @if(session()->get('success'))
+                 <div class="alert alert-success text-center">
+                     {{ session()->get('success') }}
+                 </div>
+            @endif
+
             <form action="{{route('hero.update', $hero->id)}}" method="post" enctype="multipart/form-data" name="hero">
                 @method('PATCH')
                 @csrf
@@ -46,12 +52,10 @@
                             </div>
                         @endforeach
                     </div>
-                    <input type="file" class="form-control-file mt-3" onchange="handleFiles(this.files)" name="images[]" id="images" multiple accept="image/*">
-                    <a href="#" id="fileSelect">Select some files</a>
-                    <div id="fileList"></div>
+                    <input type="file" class="form-control-file mt-3" name="images[]" id="images" multiple accept="image/*">
                 </div>
-                <?php print_r($hero->images); ?>
-                <a href="{{ url()->previous() }}" class="mr-3">Cancel</a>
+                <?php //print_r($hero->images); ?>
+                <a href="{{ route('hero.show', $hero->id) }}" class="mr-3">Cancel</a>
                 <button type="submit" class="btn btn-primary">Update</button>
             </form>
         </div>
@@ -59,7 +63,8 @@
 
     <script>
 
-        let input = document.querySelector ('#images');
+
+     /*let input = document.querySelector ('#images');
 
         handleClickImage();
 
@@ -112,13 +117,13 @@
                     }
                     div.appendChild(img);
 
-                    /*const info = document.createElement("span");
+                    /!*const info = document.createElement("span");
                     info.innerHTML = files[i].name + ": " + files[i].size + " bytes";
-                    div.appendChild(info);*/
+                    div.appendChild(info);*!/
                 }
             }
             handleClickImage();
-        }
+        }*/
 
 
     </script>

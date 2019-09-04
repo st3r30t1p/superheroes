@@ -31,7 +31,13 @@ class SuperHero extends Model
     }
 
     public function setImagesAttribute($value) {
-        //substr(strrchr($value, "/"), 1);
-        //dd($value);
+
+        if(!$value) {
+          $imagesInArray = array_map(function($value) {
+                return substr(strrchr($value, "/"), 1);
+            }, $this->images);
+            return implode(',', $imagesInArray);
+        }
+        $this->attributes['images'] = $value;
     }
 }

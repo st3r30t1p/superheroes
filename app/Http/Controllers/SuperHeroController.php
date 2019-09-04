@@ -46,11 +46,13 @@ class SuperHeroController extends Controller
     public function store(HeroRequest $request)
     {
         $images = [];
-        foreach ($request->file('images') as $image) {
-            $ext = $image->getClientOriginalExtension();
-            $filename = md5($image->getClientOriginalName().time()).'.'.$ext;
-            array_push($images, $filename);
-            Storage::disk('public')->put($filename, File::get($image));
+        if($request->has('images')) {
+            foreach ($request->file('images') as $image) {
+                $ext = $image->getClientOriginalExtension();
+                $filename = md5($image->getClientOriginalName() . time()) . '.' . $ext;
+                array_push($images, $filename);
+                Storage::disk('public')->put($filename, File::get($image));
+            }
         }
         $hero = new SuperHero([
            'nickname' => $request->nickname,
@@ -118,7 +120,7 @@ class SuperHeroController extends Controller
         $hero->images = implode(",", $images);
         $hero->save();
 
-        return redirect('/')->with('success', 'Hero edited successfuly!');
+        return redirect()->back()->with('success', 'Hero edited successfuly!');
     }
 
     /**
@@ -130,6 +132,9 @@ class SuperHeroController extends Controller
     public function destroy($id)
     {
         $hero = SuperHero::find($id);
+        foreach($hero->images as $image) {
+            Storage::disk('public')->delete(substr(strrchr($image, "/"), 1));
+        }
         $hero->delete();
         return redirect('/')->with('success', 'Hero deleted successfuly!');
     }
