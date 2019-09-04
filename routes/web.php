@@ -11,9 +11,11 @@
 |
 */
 
-Route::get('/', 'SuperHeroController@index');
+/*
 Route::get('/hero/{id}', 'SuperHeroController@show')->name('hero.show');
-
+Route::get('/hero/create', 'SuperHeroController@create')->name('hero.create');*/
+Route::get('/', 'SuperHeroController@index');
+Route::resource('hero', 'SuperHeroController');
 
 Auth::routes();
 

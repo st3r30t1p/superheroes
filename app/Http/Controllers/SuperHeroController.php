@@ -2,11 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\HeroRequest;
 use App\SuperHero;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class SuperHeroController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except('index', 'show');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -26,18 +34,35 @@ class SuperHeroController extends Controller
      */
     public function create()
     {
-        //
+        return view('hero.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\HeroRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(HeroRequest $request)
     {
-        //
+        $images = [];
+        foreach ($request->file('images') as $image) {
+            $ext = $image->getClientOriginalExtension();
+            $filename = md5($image->getClientOriginalName().time()).'.'.$ext;
+            array_push($images, $filename);
+            Storage::disk('public')->put($filename, File::get($image));
+        }
+        $hero = new SuperHero([
+           'nickname' => $request->nickname,
+           'real_name' => $request->real_name,
+            'origin_description' => $request->origin_description,
+            'superpowers' => $request->superpowers,
+            'catch_phrase' => $request->catch_phrase,
+            'images' => implode(",", $images)
+        ]);
+        $hero->save();
+
+       return redirect('/')->with('success', 'Hero added successfuly!');
     }
 
     /**
@@ -50,7 +75,7 @@ class SuperHeroController extends Controller
     {
         $hero = SuperHero::find($id);
 
-        return view('hero/show', compact('hero'));
+        return view('hero.show', compact('hero'));
     }
 
     /**
@@ -61,7 +86,8 @@ class SuperHeroController extends Controller
      */
     public function edit($id)
     {
-        //
+        $hero = SuperHero::find($id);
+        return view('hero.edit', compact('hero'));
     }
 
     /**
@@ -73,7 +99,26 @@ class SuperHeroController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $images = [];
+        if($request->has('images')) {
+            foreach ($request->file('images') as $image) {
+                $ext = $image->getClientOriginalExtension();
+                $filename = md5($image->getClientOriginalName() . time()) . '.' . $ext;
+                array_push($images, $filename);
+                Storage::disk('public')->put($filename, File::get($image));
+            }
+        }
+
+        $hero = SuperHero::find($id);
+        $hero->nickname = $request->nickname;
+        $hero->real_name = $request->real_name;
+        $hero->origin_description = $request->origin_description;
+        $hero->superpowers = $request->superpowers;
+        $hero->catch_phrase = $request->catch_phrase;
+        $hero->images = implode(",", $images);
+        $hero->save();
+
+        return redirect('/')->with('success', 'Hero edited successfuly!');
     }
 
     /**
@@ -84,6 +129,8 @@ class SuperHeroController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $hero = SuperHero::find($id);
+        $hero->delete();
+        return redirect('/')->with('success', 'Hero deleted successfuly!');
     }
 }
