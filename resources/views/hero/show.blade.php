@@ -15,10 +15,10 @@
                     </div>
                 </div>
                 <div class="media-body">
-                    <h5 class="mt-0">{{$hero->nickname}}</h5>
-                    <h6 class="mt-0">{{$hero->real_name}}</h6>
-                    <p>{{$hero->superpowers}}</p>
-                    <p>{{$hero->origin_description}}</p>
+                    <div class="mb-3">Nickname: <h4 class="d-inline">{{$hero->nickname}}</h4></div>
+                    <div class="mb-3">Real Name: <h5 class="d-inline">{{$hero->real_name}}</h5></div>
+                    <div class="mb-3">Super Powers: <p class="d-inline">{{$hero->superpowers}}</p></div>
+                    <div class="mb-3">Description: <p class="d-inline">{{$hero->origin_description}}</p></div>
                 </div>
             </div>
             <a href="{{ route('hero.index') }}" class="mr-3">Cancel</a>
