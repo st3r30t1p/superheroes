@@ -4,21 +4,9 @@
     <div class="row">
         <div class="col-12">
 
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul class="m-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+            @include('message-info.errors')
 
-            @if(session()->get('success'))
-                 <div class="alert alert-success text-center">
-                     {{ session()->get('success') }}
-                 </div>
-            @endif
+            @include('message-info.success')
 
             <form action="{{route('hero.update', $hero->id)}}" method="post" enctype="multipart/form-data" name="hero">
                 @method('PATCH')
@@ -54,78 +42,9 @@
                     </div>
                     <input type="file" class="form-control-file mt-3" name="images[]" id="images" multiple accept="image/*">
                 </div>
-                <?php //print_r($hero->images); ?>
                 <a href="{{ route('hero.show', $hero->id) }}" class="mr-3">Cancel</a>
                 <button type="submit" class="btn btn-primary">Update</button>
             </form>
         </div>
     </div>
-
-    <script>
-
-
-     /*let input = document.querySelector ('#images');
-
-        handleClickImage();
-
-        function handleClickImage() {
-           let images = document.querySelectorAll ('.hero-image');
-            images.forEach (
-                function (currentValue, currentIndex) {
-                    currentValue.addEventListener ('click', function (e) {
-                        console.log (this);
-                        this.parentNode.removeChild (this);
-
-                    });
-                });
-        }
-
-
-        input.addEventListener ('change', function (e) {
-            console.log (input.files);
-        });
-
-
-        const fileSelect = document.getElementById("fileSelect"),
-            fileElem = document.getElementById("fileElem"),
-            fileList = document.getElementById("fileList");
-
-        fileSelect.addEventListener("click", function (e) {
-            if (fileElem) {
-                fileElem.click();
-            }
-            e.preventDefault(); // prevent navigation to "#"
-        }, false);
-
-        function handleFiles(files) {
-            if (!files.length) {
-                fileList.innerHTML = "<p>No files selected!</p>";
-            } else {
-                fileList.innerHTML = "";
-                const list = document.querySelector(".images-list");
-                //fileList.appendChild(list);
-                for (let i = 0; i < files.length; i++) {
-                    const div = document.createElement("div");
-                    div.classList.add('hero-image', 'mr-3', 'mt-3', 'd-inline-block');
-                    list.appendChild(div);
-
-                    const img = document.createElement("img");
-                    img.src = window.URL.createObjectURL(files[i]);
-                    //img.height = 60;
-                    img.onload = function() {
-                        window.URL.revokeObjectURL(this.src);
-                    }
-                    div.appendChild(img);
-
-                    /!*const info = document.createElement("span");
-                    info.innerHTML = files[i].name + ": " + files[i].size + " bytes";
-                    div.appendChild(info);*!/
-                }
-            }
-            handleClickImage();
-        }*/
-
-
-    </script>
-
 @endsection

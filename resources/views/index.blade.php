@@ -5,14 +5,10 @@
     <div class="row">
         <div class="col-12">
 
-            @if(session()->get('success'))
-                <div class="alert alert-success text-center">
-                    {{ session()->get('success') }}
-                </div>
-            @endif
+            @include('message-info.success')
 
             <ul class="list-unstyled">
-                @foreach($heros as $hero)
+                @foreach($heroes as $hero)
                     <li class="media mb-4">
                         <div class="hero-image mr-3">
                             <a href="{{route('hero.show', ['hero' => $hero->id])}}" class="d-flex">
@@ -32,7 +28,7 @@
                 </div>
             @endif
             <div class="mt-4 mb-4">
-                {{ $heros->links() }}
+                {{ $heroes->links() }}
             </div>
         </div>
     </div>

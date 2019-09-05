@@ -29,7 +29,8 @@ class HeroRequest extends FormRequest
             'origin_description' => 'nullable|string',
             'superpowers' => 'max:255',
             'catch_phrase' => 'max:255',
-            'file' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'images' => 'nullable|array|between:1,4',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg'
         ];
     }
 }

@@ -4,15 +4,7 @@
     <div class="row">
         <div class="col-12">
 
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul class="m-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+            @include('message-info.errors')
 
             <form action="{{route('hero.store')}}" method="post" enctype="multipart/form-data">
                 @csrf
@@ -40,7 +32,7 @@
                     <label for="images">Images:</label>
                     <input type="file" class="form-control-file" name="images[]" id="images" multiple>
                 </div>
-                <a href="{{ url()->previous() }}" class="mr-3">Cancel</a>
+                <a href="{{ route('hero.index') }}" class="mr-3">Cancel</a>
                 <button type="submit" class="btn btn-primary">Create</button>
             </form>
         </div>
