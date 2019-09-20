@@ -18,3 +18,5 @@ Route::resource('hero', 'SuperHeroController');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('file', 'FileController@index');
