@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends Controller
 {
@@ -35,5 +37,45 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    public function redirectToGoogleProvider()
+    {
+        $parameters = [
+            'access_type' => 'offline',
+            'approval_prompt' => 'force'
+        ];
+
+        return Socialite::driver('google')->scopes(["https://www.googleapis.com/auth/drive"])->with($parameters)->redirect();
+    }
+
+    /**
+     * Obtain the user information from Facebook.
+     *
+     * @return void
+     */
+    public function handleProviderGoogleCallback()
+    {
+        $auth_user = Socialite::driver('Google')->user();
+
+        $data = [
+            'token' => $auth_user->token,
+            'expires_in' => $auth_user->expiresIn,
+            'name' => $auth_user->name
+        ];
+
+        if($auth_user->refreshToken){
+            $data['refresh_token'] = $auth_user->refreshToken;
+        }
+
+        $user = User::updateOrCreate(
+            [
+                'email' => $auth_user->email
+            ],
+            $data
+        );
+
+        Auth::login($user, true);
+        return redirect()->to('/'); // Redirect to a secure page
     }
 }
